@@ -261,12 +261,9 @@ function registrarTurno() {
         })
     })
 .then(response => {
-    alert("Respuesta HTTP: " + response.status);
+    alert("Código HTTP: " + response.status);
 })
-.catch(error => {
-    alert("ERROR: " + error.message);
-    console.error(error);
-});
+
 
 
 
