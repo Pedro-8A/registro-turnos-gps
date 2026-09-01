@@ -260,18 +260,14 @@ function registrarTurno() {
             autorizacion: "PRUEBA"
         })
     })
-    .then(response => {
-        if (response.ok) {
-            alert("Registro enviado correctamente.");
-        } else {
-            alert("Error al enviar el registro.");
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        alert("No se pudo conectar con el sistema.");
-    });
-}
+.then(response => {
+    alert("Respuesta HTTP: " + response.status);
+})
+.catch(error => {
+    alert("ERROR: " + error.message);
+    console.error(error);
+});
+
 
 
 </script>
