@@ -390,15 +390,24 @@ function registrarTurno() {
         })
 
     })
-
     .then(response => {
-
-        alert(
-            "Código HTTP: " +
-            response.status
-        );
-
+    
+        if (response.status === 202) {
+    
+            alert("Registro realizado correctamente.");
+    
+            window.location.reload();
+    
+        } else {
+    
+            alert(
+                "No se pudo registrar el turno.\n" +
+                "Código: " + response.status
+            );
+        }
+    
     })
+
 
     .catch(error => {
 
