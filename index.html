@@ -246,7 +246,7 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 function registrarTurno() {
 
-    fetch("TU_URL_DE_POWER_AUTOMATE", {
+    fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/19/workflows/88c07906fef04e478e2a93b0874e2839/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oOuBowuExfYF2heBheWEKS22aqHkBqukPw4z_QTq6fw", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
