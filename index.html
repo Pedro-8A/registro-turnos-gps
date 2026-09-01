@@ -246,12 +246,33 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 function registrarTurno() {
 
-    alert(
-        "Ubicación validada.\n\n" +
-        "Puesto: " + puesto.nombre
-    );
-
+    fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/19/workflows/88c07906fef04e478e2a93b0874e2839/triggers/manual/paths/invoke?api-version=1", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            vigilador: "Andrada Tomás",
+            sala: puesto.nombre,
+            ubicacion: "Principal",
+            turno: "Regular",
+            movimiento: "Ingreso",
+            autorizacion: "PRUEBA"
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Registro enviado correctamente.");
+        } else {
+            alert("Error al enviar el registro.");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("No se pudo conectar con el sistema.");
+    });
 }
+
 
 </script>
 
