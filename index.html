@@ -22,6 +22,23 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
         button {
             width: 100%;
             padding: 15px;
@@ -48,6 +65,10 @@
             margin-top: 20px;
             font-size: 16px;
         }
+
+        #campoUbicacion {
+            display: none;
+        }
     </style>
 </head>
 
@@ -58,6 +79,62 @@
     <h1>Control de Turno</h1>
 
     <p>Puesto: <strong id="nombrePuesto"></strong></p>
+
+    <!-- VIGILADOR -->
+
+    <label for="vigilador">Vigilador</label>
+
+    <select id="vigilador">
+        <option value="">Seleccione vigilador</option>
+        <option value="Andrada Tomás">Andrada Tomás</option>
+        <option value="Becerra Nélida">Becerra Nélida</option>
+        <option value="Lagos Cristian">Lagos Cristian</option>
+        <option value="Morales Facundo">Morales Facundo</option>
+        <option value="Morales Samuel">Morales Samuel</option>
+        <option value="Neme Alan">Neme Alan</option>
+        <option value="Olguín Uriel">Olguín Uriel</option>
+        <option value="Ortiz Celeste">Ortiz Celeste</option>
+        <option value="Pereyra Sergio">Pereyra Sergio</option>
+    </select>
+
+
+    <!-- TURNO -->
+
+    <label for="turno">Turno</label>
+
+    <select id="turno">
+        <option value="">Seleccione turno</option>
+        <option value="Regular">Regular</option>
+        <option value="Refuerzo">Refuerzo</option>
+        <option value="Especial">Especial</option>
+    </select>
+
+
+    <!-- MOVIMIENTO -->
+
+    <label for="movimiento">Movimiento</label>
+
+    <select id="movimiento">
+        <option value="">Seleccione movimiento</option>
+        <option value="Ingreso">Ingreso</option>
+        <option value="Egreso">Egreso</option>
+    </select>
+
+
+    <!-- UBICACIÓN INTERNA -->
+
+    <div id="campoUbicacion">
+
+        <label for="ubicacion">Ubicación</label>
+
+        <select id="ubicacion">
+            <option value="">Seleccione ubicación</option>
+            <option value="Principal">Principal</option>
+            <option value="Fumadores">Fumadores</option>
+        </select>
+
+    </div>
+
 
     <p>Verifique su ubicación antes de registrar el turno.</p>
 
@@ -133,6 +210,15 @@ if (!puesto) {
 
     document.getElementById("nombrePuesto").innerHTML =
         puesto.nombre;
+
+    // Mostrar ubicación interna solamente en Golden Palace
+
+    if (codigoPuesto === "GP") {
+
+        document.getElementById("campoUbicacion").style.display =
+            "block";
+
+    }
 
 }
 
@@ -241,38 +327,94 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 
 // ==========================================
-// REGISTRAR TURNO
+// REGISTRAR TURNO - PRUEBA
 // ==========================================
 
 function registrarTurno() {
 
+    const vigilador =
+        document.getElementById("vigilador").value;
+
+    const turno =
+        document.getElementById("turno").value;
+
+    const movimiento =
+        document.getElementById("movimiento").value;
+
+    let ubicacion = "";
+
+    if (codigoPuesto === "GP") {
+
+        ubicacion =
+            document.getElementById("ubicacion").value;
+    }
+
+
+    // Validar campos
+
+    if (!vigilador || !turno || !movimiento) {
+
+        alert("Complete todos los campos.");
+        return;
+    }
+
+    if (codigoPuesto === "GP" && !ubicacion) {
+
+        alert("Seleccione la ubicación.");
+        return;
+    }
+
+
     fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/19/workflows/88c07906fef04e478e2a93b0874e2839/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oOuBowuExfYF2heBheWEKS22aqHkBqukPw4z_QTq6fw", {
+
         method: "POST",
+
         headers: {
             "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
-            vigilador: "Andrada Tomás",
+
+            vigilador: vigilador,
+
             sala: puesto.nombre,
-            ubicacion: "Principal",
-            turno: "Regular",
-            movimiento: "Ingreso",
+
+            ubicacion: ubicacion,
+
+            turno: turno,
+
+            movimiento: movimiento,
+
             autorizacion: "PRUEBA"
+
         })
+
     })
+
     .then(response => {
-        alert("Código HTTP: " + response.status);
+
+        alert(
+            "Código HTTP: " +
+            response.status
+        );
+
     })
+
     .catch(error => {
-        alert("ERROR: " + error.message);
+
+        alert(
+            "ERROR: " +
+            error.message
+        );
+
     });
+
 }
 
+</script>
 
-
-
-
-
+</body>
+</html>
 </script>
 
 </body>
