@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Turno</title>
+</head>
+
+<body>
+    <h1>Control de Turno</h1>
+
+    <p>Presione el botón para verificar su ubicación.</p>
+
+    <button onclick="verificarUbicacion()">
+        VERIFICAR UBICACIÓN
+    </button>
+
+    <p id="resultado"></p>
+
+<script>
+
+const LATITUD_PUESTO = -33.304716;
+const LONGITUD_PUESTO = -66.336637;
+const RADIO_METROS = 100;
+
+function verificarUbicacion() {
+
+    const resultado = document.getElementById("resultado");
+
+    if (!navigator.geolocation) {
+        resultado.innerHTML = "Este teléfono no permite obtener ubicación.";
+        return;
+    }
+
+    resultado.innerHTML = "Obteniendo ubicación...";
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(posicion) {
+
+            const latitud = posicion.coords.latitude;
+            const longitud = posicion.coords.longitude;
+
+            const distancia = calcularDistancia(
+                latitud,
+                longitud,
+                LATITUD_PUESTO,
+                LONGITUD_PUESTO
+            );
+
+            if (distancia <= RADIO_METROS) {
+
+                resultado.innerHTML =
+                    "Ubicación validada.<br>" +
+                    "Distancia: " + Math.round(distancia) + " metros";
+
+            } else {
+
+                resultado.innerHTML =
+                    "Fuera del área autorizada.<br>" +
+                    "Distancia: " + Math.round(distancia) + " metros";
+            }
+        },
+
+        function(error) {
+
+            resultado.innerHTML =
+                "No fue posible obtener la ubicación. " +
+                "Verifique que el GPS esté habilitado.";
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+}
+
+
+function calcularDistancia(lat1, lon1, lat2, lon2) {
+
+    const R = 6371000;
+
+    const rad = Math.PI / 180;
+
+    const dLat = (lat2 - lat1) * rad;
+    const dLon = (lon2 - lon1) * rad;
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * rad) *
+        Math.cos(lat2 * rad) *
+        Math.sin(dLon / 2) ** 2;
+
+    const c = 2 * Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1 - a)
+    );
+
+    return R * c;
+}
+
+</script>
+
+</body>
+</html>
 
