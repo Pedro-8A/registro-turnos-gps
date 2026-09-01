@@ -243,9 +243,31 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 // ==========================================
 // REGISTRAR TURNO
 // ==========================================
+
 function registrarTurno() {
-    alert("VERSION NUEVA");
+
+    fetch("TU_URL_DE_POWER_AUTOMATE", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            vigilador: "Andrada Tomás",
+            sala: puesto.nombre,
+            ubicacion: "Principal",
+            turno: "Regular",
+            movimiento: "Ingreso",
+            autorizacion: "PRUEBA"
+        })
+    })
+    .then(response => {
+        alert("Código HTTP: " + response.status);
+    })
+    .catch(error => {
+        alert("ERROR: " + error.message);
+    });
 }
+
 
 
 
