@@ -69,10 +69,46 @@
         #campoUbicacion {
             display: none;
         }
+
+        #overlayExito {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.97);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        .mensajeExito {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .check {
+            font-size: 70px;
+            font-weight: bold;
+        }
+        
+        .mensajeExito h2 {
+            font-size: 28px;
+            margin: 15px 0 10px;
+        }
+        
+        .mensajeExito p {
+            font-size: 20px;
+        }
     </style>
 </head>
 
 <body>
+    <div id="overlayExito">
+    <div class="mensajeExito">
+        <div class="check">✓</div>
+        <h2>Registro exitoso</h2>
+        <p>Muchas gracias.</p>
+    </div>
+</div>
 
 <div class="contenedor">
 
@@ -332,6 +368,16 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 function registrarTurno() {
 
+    if (!puesto) {
+        alert("Puesto no válido.");
+        return;
+    }
+
+    if (!ubicacionValidada) {
+        alert("Debe verificar su ubicación antes de registrar el turno.");
+        return;
+    }
+
     const vigilador =
         document.getElementById("vigilador").value;
 
@@ -349,7 +395,6 @@ function registrarTurno() {
             document.getElementById("ubicacion").value;
     }
 
-
     // Validar campos
 
     if (!vigilador || !turno || !movimiento) {
@@ -364,7 +409,8 @@ function registrarTurno() {
         return;
     }
 
-    const botonTurno = document.getElementById("btnTurno");
+    const botonTurno =
+        document.getElementById("btnTurno");
 
     botonTurno.disabled = true;
     botonTurno.innerText = "REGISTRANDO...";
@@ -389,15 +435,15 @@ function registrarTurno() {
 
             movimiento: movimiento,
 
-            autorizacion: ""
+            autorizacion: "Válido GPS"
 
         })
 
     })
     .then(response => {
-    
-    if (response.status === 202) {
-    
+
+        if (response.status === 202) {
+
         alert("Registro realizado correctamente.");
     
         document.getElementById("vigilador").value = "";
@@ -413,17 +459,21 @@ function registrarTurno() {
             "Verifique su ubicación antes de registrar el turno.";
     
     } else {
-    
+
+            botonTurno.disabled = false;
+            botonTurno.innerText = "REGISTRAR TURNO";
+
             alert(
                 "No se pudo registrar el turno.\n" +
                 "Código: " + response.status
             );
         }
-    
+
     })
-
-
     .catch(error => {
+
+        botonTurno.disabled = false;
+        botonTurno.innerText = "REGISTRAR TURNO";
 
         alert(
             "ERROR: " +
