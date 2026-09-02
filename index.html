@@ -396,13 +396,23 @@ function registrarTurno() {
     })
     .then(response => {
     
-        if (response.status === 202) {
+    if (response.status === 202) {
     
-            alert("Registro realizado correctamente.");
+        alert("Registro realizado correctamente.");
     
-            window.location.reload();
+        document.getElementById("vigilador").value = "";
+        document.getElementById("turno").value = "";
+        document.getElementById("movimiento").value = "";
+        document.getElementById("ubicacion").value = "";
     
-        } else {
+        botonTurno.style.display = "none";
+        botonTurno.disabled = false;
+        botonTurno.innerText = "REGISTRAR TURNO";
+    
+        document.getElementById("resultado").innerHTML =
+            "Verifique su ubicación antes de registrar el turno.";
+    
+    } else {
     
             alert(
                 "No se pudo registrar el turno.\n" +
