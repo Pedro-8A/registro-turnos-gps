@@ -70,31 +70,33 @@
             display: none;
         }
 
+        /* OVERLAY DE ÉXITO */
+
         #overlayExito {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(255, 255, 255, 0.97);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.97);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .mensajeExito {
             text-align: center;
             padding: 30px;
         }
-        
+
         .check {
             font-size: 70px;
             font-weight: bold;
         }
-        
+
         .mensajeExito h2 {
             font-size: 28px;
             margin: 15px 0 10px;
         }
-        
+
         .mensajeExito p {
             font-size: 20px;
         }
@@ -102,13 +104,23 @@
 </head>
 
 <body>
-    <div id="overlayExito">
+
+<!-- OVERLAY DE ÉXITO -->
+
+<div id="overlayExito">
+
     <div class="mensajeExito">
+
         <div class="check">✓</div>
+
         <h2>Registro exitoso</h2>
+
         <p>Muchas gracias.</p>
+
     </div>
+
 </div>
+
 
 <div class="contenedor">
 
@@ -116,12 +128,15 @@
 
     <p>Puesto: <strong id="nombrePuesto"></strong></p>
 
+
     <!-- VIGILADOR -->
 
     <label for="vigilador">Vigilador</label>
 
     <select id="vigilador">
+
         <option value="">Seleccione vigilador</option>
+
         <option value="Andrada Tomás">Andrada Tomás</option>
         <option value="Becerra Nélida">Becerra Nélida</option>
         <option value="Lagos Cristian">Lagos Cristian</option>
@@ -131,6 +146,7 @@
         <option value="Olguín Uriel">Olguín Uriel</option>
         <option value="Ortiz Celeste">Ortiz Celeste</option>
         <option value="Pereyra Sergio">Pereyra Sergio</option>
+
     </select>
 
 
@@ -139,10 +155,13 @@
     <label for="turno">Turno</label>
 
     <select id="turno">
+
         <option value="">Seleccione turno</option>
+
         <option value="Regular">Regular</option>
         <option value="Refuerzo">Refuerzo</option>
         <option value="Especial">Especial</option>
+
     </select>
 
 
@@ -151,9 +170,12 @@
     <label for="movimiento">Movimiento</label>
 
     <select id="movimiento">
+
         <option value="">Seleccione movimiento</option>
+
         <option value="Ingreso">Ingreso</option>
         <option value="Egreso">Egreso</option>
+
     </select>
 
 
@@ -164,29 +186,49 @@
         <label for="ubicacion">Ubicación</label>
 
         <select id="ubicacion">
+
             <option value="">Seleccione ubicación</option>
+
             <option value="Principal">Principal</option>
             <option value="Fumadores">Fumadores</option>
+
         </select>
 
     </div>
 
 
-    <p>Verifique su ubicación antes de registrar el turno.</p>
+    <p>
+        Verifique su ubicación antes de registrar el turno.
+    </p>
+
 
     <button id="btnUbicacion" onclick="verificarUbicacion()">
+
         VERIFICAR UBICACIÓN
+
     </button>
+
 
     <div id="resultado"></div>
 
+
     <button id="btnTurno" onclick="registrarTurno()">
+
         REGISTRAR TURNO
+
     </button>
 
 </div>
 
+
 <script>
+
+// ==========================================
+// ESTADO DE VALIDACIÓN GPS
+// ==========================================
+
+let ubicacionValidada = false;
+
 
 // ==========================================
 // CONFIGURACIÓN DE PUESTOS
@@ -214,6 +256,7 @@ const PUESTOS = {
         longitud: -66.30546411599597,
         radio: 100
     }
+
 };
 
 
@@ -221,11 +264,14 @@ const PUESTOS = {
 // IDENTIFICAR EL PUESTO DESDE LA URL
 // ==========================================
 
-const parametros = new URLSearchParams(window.location.search);
+const parametros =
+    new URLSearchParams(window.location.search);
 
-const codigoPuesto = parametros.get("puesto");
+const codigoPuesto =
+    parametros.get("puesto");
 
-const puesto = PUESTOS[codigoPuesto];
+const puesto =
+    PUESTOS[codigoPuesto];
 
 
 // ==========================================
@@ -237,7 +283,8 @@ if (!puesto) {
     document.getElementById("nombrePuesto").innerHTML =
         "Puesto no válido";
 
-    document.getElementById("btnUbicacion").style.display = "none";
+    document.getElementById("btnUbicacion").style.display =
+        "none";
 
     document.getElementById("resultado").innerHTML =
         "<strong>Error:</strong> el puesto indicado no existe.";
@@ -265,10 +312,19 @@ if (!puesto) {
 
 function verificarUbicacion() {
 
-    const resultado = document.getElementById("resultado");
-    const botonTurno = document.getElementById("btnTurno");
+    const resultado =
+        document.getElementById("resultado");
+
+    const botonTurno =
+        document.getElementById("btnTurno");
+
+
+    // Cada nueva verificación comienza desde cero
+
+    ubicacionValidada = false;
 
     botonTurno.style.display = "none";
+
 
     if (!navigator.geolocation) {
 
@@ -278,24 +334,37 @@ function verificarUbicacion() {
         return;
     }
 
+
     resultado.innerHTML =
         "Obteniendo ubicación...";
+
 
     navigator.geolocation.getCurrentPosition(
 
         function(posicion) {
 
-            const latitud = posicion.coords.latitude;
-            const longitud = posicion.coords.longitude;
+            const latitud =
+                posicion.coords.latitude;
 
-            const distancia = calcularDistancia(
-                latitud,
-                longitud,
-                puesto.latitud,
-                puesto.longitud
-            );
+            const longitud =
+                posicion.coords.longitude;
+
+
+            const distancia =
+                calcularDistancia(
+                    latitud,
+                    longitud,
+                    puesto.latitud,
+                    puesto.longitud
+                );
+
 
             if (distancia <= puesto.radio) {
+
+                // GPS VALIDADO
+
+                ubicacionValidada = true;
+
 
                 resultado.innerHTML =
                     "<strong>Ubicación validada</strong><br>" +
@@ -303,9 +372,15 @@ function verificarUbicacion() {
                     Math.round(distancia) +
                     " metros";
 
-                botonTurno.style.display = "block";
+
+                botonTurno.style.display =
+                    "block";
+
 
             } else {
+
+                ubicacionValidada = false;
+
 
                 resultado.innerHTML =
                     "<strong>Fuera del área autorizada</strong><br>" +
@@ -313,25 +388,37 @@ function verificarUbicacion() {
                     Math.round(distancia) +
                     " metros";
 
-                botonTurno.style.display = "none";
+
+                botonTurno.style.display =
+                    "none";
+
             }
+
         },
 
+
         function(error) {
+
+            ubicacionValidada = false;
 
             resultado.innerHTML =
                 "No fue posible obtener la ubicación.<br>" +
                 "Verifique que el GPS esté habilitado.";
 
-            botonTurno.style.display = "none";
+            botonTurno.style.display =
+                "none";
+
         },
+
 
         {
             enableHighAccuracy: true,
             timeout: 10000,
             maximumAge: 0
         }
+
     );
+
 }
 
 
@@ -342,10 +429,16 @@ function verificarUbicacion() {
 function calcularDistancia(lat1, lon1, lat2, lon2) {
 
     const R = 6371000;
+
     const rad = Math.PI / 180;
 
-    const dLat = (lat2 - lat1) * rad;
-    const dLon = (lon2 - lon1) * rad;
+
+    const dLat =
+        (lat2 - lat1) * rad;
+
+    const dLon =
+        (lon2 - lon1) * rad;
+
 
     const a =
         Math.sin(dLat / 2) ** 2 +
@@ -353,67 +446,100 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
         Math.cos(lat2 * rad) *
         Math.sin(dLon / 2) ** 2;
 
-    const c = 2 * Math.atan2(
-        Math.sqrt(a),
-        Math.sqrt(1 - a)
-    );
+
+    const c =
+        2 * Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
 
     return R * c;
+
 }
 
 
 // ==========================================
-// REGISTRAR TURNO - PRUEBA
+// REGISTRAR TURNO
 // ==========================================
 
 function registrarTurno() {
 
+
+    // Validar puesto
+
     if (!puesto) {
+
         alert("Puesto no válido.");
+
         return;
     }
 
+
+    // Validar GPS
+
     if (!ubicacionValidada) {
-        alert("Debe verificar su ubicación antes de registrar el turno.");
+
+        alert(
+            "Debe verificar su ubicación antes de registrar el turno."
+        );
+
         return;
     }
+
 
     const vigilador =
         document.getElementById("vigilador").value;
 
+
     const turno =
         document.getElementById("turno").value;
+
 
     const movimiento =
         document.getElementById("movimiento").value;
 
+
     let ubicacion = "";
+
 
     if (codigoPuesto === "GP") {
 
         ubicacion =
             document.getElementById("ubicacion").value;
+
     }
+
 
     // Validar campos
 
     if (!vigilador || !turno || !movimiento) {
 
         alert("Complete todos los campos.");
+
         return;
     }
+
 
     if (codigoPuesto === "GP" && !ubicacion) {
 
         alert("Seleccione la ubicación.");
+
         return;
     }
+
 
     const botonTurno =
         document.getElementById("btnTurno");
 
+
+    // Evitar doble envío
+
     botonTurno.disabled = true;
-    botonTurno.innerText = "REGISTRANDO...";
+
+    botonTurno.innerText =
+        "REGISTRANDO...";
+
 
     fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/19/workflows/88c07906fef04e478e2a93b0874e2839/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oOuBowuExfYF2heBheWEKS22aqHkBqukPw4z_QTq6fw", {
 
@@ -422,6 +548,7 @@ function registrarTurno() {
         headers: {
             "Content-Type": "application/json"
         },
+
 
         body: JSON.stringify({
 
@@ -440,40 +567,45 @@ function registrarTurno() {
         })
 
     })
+
+
     .then(response => {
+
 
         if (response.status === 202) {
 
-        alert("Registro realizado correctamente.");
-    
-        document.getElementById("vigilador").value = "";
-        document.getElementById("turno").value = "";
-        document.getElementById("movimiento").value = "";
-        document.getElementById("ubicacion").value = "";
-    
-        botonTurno.style.display = "none";
-        botonTurno.disabled = false;
-        botonTurno.innerText = "REGISTRAR TURNO";
-    
-        document.getElementById("resultado").innerHTML =
-            "Verifique su ubicación antes de registrar el turno.";
-    
-    } else {
+            // MOSTRAR OVERLAY DE ÉXITO
+
+            document.getElementById("overlayExito").style.display =
+                "flex";
+
+
+        } else {
 
             botonTurno.disabled = false;
-            botonTurno.innerText = "REGISTRAR TURNO";
+
+            botonTurno.innerText =
+                "REGISTRAR TURNO";
+
 
             alert(
                 "No se pudo registrar el turno.\n" +
-                "Código: " + response.status
+                "Código: " +
+                response.status
             );
+
         }
 
     })
+
+
     .catch(error => {
 
         botonTurno.disabled = false;
-        botonTurno.innerText = "REGISTRAR TURNO";
+
+        botonTurno.innerText =
+            "REGISTRAR TURNO";
+
 
         alert(
             "ERROR: " +
@@ -484,10 +616,6 @@ function registrarTurno() {
 
 }
 
-</script>
-
-</body>
-</html>
 </script>
 
 </body>
