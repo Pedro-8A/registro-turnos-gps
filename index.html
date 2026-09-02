@@ -570,34 +570,26 @@ function registrarTurno() {
     })
 
 
-    .then(response => {
+    .then(async response => {
 
+    const resultado = await response.json();
 
-        if (response.status === 202) {
+    if (resultado.ok) {
 
-            // MOSTRAR OVERLAY DE ÉXITO
+        document.getElementById("overlayExito").style.display =
+            "flex";
 
-            document.getElementById("overlayExito").style.display =
-                "flex";
+    } else {
 
+        botonTurno.disabled = false;
 
-        } else {
+        botonTurno.innerText =
+            "REGISTRAR TURNO";
 
-            botonTurno.disabled = false;
+        alert(resultado.mensaje);
+    }
 
-            botonTurno.innerText =
-                "REGISTRAR TURNO";
-
-
-            alert(
-                "No se pudo registrar el turno.\n" +
-                "Código: " +
-                response.status
-            );
-
-        }
-
-    })
+})
 
 
     .catch(error => {
