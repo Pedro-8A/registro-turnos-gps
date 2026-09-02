@@ -576,10 +576,13 @@ function registrarTurno() {
 
     if (resultado.ok) {
 
-        document.getElementById("overlayExito").style.display =
-            "flex";
+    document.getElementById("vigilador").value = "";
+    document.getElementById("turno").value = "";
+    document.getElementById("movimiento").value = "";
+    document.getElementById("ubicacion").value = "";
 
-    } else {
+    document.getElementById("overlayExito").style.display = "flex";
+} else {
 
         botonTurno.disabled = false;
 
