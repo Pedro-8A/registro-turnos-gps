@@ -236,6 +236,12 @@ let ubicacionValidada = false;
 // CONFIGURACIÓN DE PUESTOS
 // ==========================================
 
+const VIGILADORES_LA_PUNTA = [
+        "Aguilar Pablo",
+        "Grenón Fabricio",
+        "Palmiotto Williams"
+];
+
 const PUESTOS = {
 
     GP: {
@@ -257,6 +263,14 @@ const PUESTOS = {
         latitud: -33.26988756766309,
         longitud: -66.30546411599597,
         radio: 100
+    },
+
+        // LA PUNTA
+    LP: {
+        nombre: "La Punta",
+        latitud: -33.30471609451662,
+        longitud: -66.33663776375057,
+        radio: 50
     }
 
 };
@@ -296,6 +310,8 @@ if (!puesto) {
     document.getElementById("nombrePuesto").innerHTML =
         puesto.nombre;
 
+    configurarVigiladores();
+
     // Mostrar ubicación interna solamente en Golden Palace
 
     if (codigoPuesto === "GP") {
@@ -306,7 +322,6 @@ if (!puesto) {
     }
 
 }
-
 
 // ==========================================
 // VERIFICAR UBICACIÓN
@@ -459,10 +474,40 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
     return R * c;
 
 }
+    
+// ==========================================
+// CONFIGURAR VIGILADORES 
+// ==========================================
+    
+function configurarVigiladores() {
 
+    const select =
+        document.getElementById("vigilador");
+
+    // Si es La Punta
+    if (codigoPuesto === "LP") {
+
+        select.innerHTML =
+            '<option value="">Seleccione vigilador</option>';
+
+        VIGILADORES_LA_PUNTA.forEach(function(vigilador) {
+
+            const opcion =
+                document.createElement("option");
+
+            opcion.value = vigilador;
+            opcion.textContent = vigilador;
+
+            select.appendChild(opcion);
+
+        });
+
+    }
+
+}
 
 // ==========================================
-// REGISTRAR TURNO
+// REGISTRAR TURNO 
 // ==========================================
 
 function registrarTurno() {
