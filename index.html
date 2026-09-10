@@ -597,7 +597,7 @@ function registrarTurno() {
 
 if (movimiento === "inicio_descanso" || movimiento === "fin_descanso") {
 
-    fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/15/workflows/4b597d79786449c6b2699d645934b6e3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=JQn0T8spHpQiFun4nMMba5-1yKIACmA7as-JbjYFdqI", {
+    fetch("https://default8b319dc47d8e4d3088699d645934b6e3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=JQn0T8spHpQiFun4nMMba5-1yKIACmA7as-JbjYFdqI", {
 
         method: "POST",
 
@@ -606,23 +606,40 @@ if (movimiento === "inicio_descanso" || movimiento === "fin_descanso") {
         },
 
         body: JSON.stringify({
-
             registroID: registroID,
-
+            vigilador: vigilador,
             accion: movimiento,
-
             ubicacion: ubicacion,
-
             autorizacion: "Válido GPS"
-
         })
 
+    })
+    .then(response => {
+        console.log("Respuesta descanso:", response.status);
+        return response.text();
+    })
+    .then(data => {
+        console.log("Datos descanso:", data);
+
+        botonTurno.disabled = false;
+        botonTurno.innerText = "REGISTRAR TURNO";
+
+        alert("Solicitud de descanso enviada.");
+    })
+    .catch(error => {
+
+        console.error("Error descanso:", error);
+
+        botonTurno.disabled = false;
+        botonTurno.innerText = "REGISTRAR TURNO";
+
+        alert("Error al registrar descanso: " + error.message);
     });
 
     return;
 }
     
-    fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/19/workflows/88c07906fef04e478e2a93b0874e2839/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oOuBowuExfYF2heBheWEKS22aqHkBqukPw4z_QTq6fw", {
+    fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/15/workflows/4b597d79786449c6b2699d645934b6e3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=JQn0T8spHpQiFun4nMMba5-1yKIACmA7as-JbjYFdqI", {
 
         method: "POST",
 
