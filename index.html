@@ -618,11 +618,22 @@ if (movimiento === "inicio_descanso" || movimiento === "fin_descanso") {
     })
     .then(data => {
         console.log("Datos descanso:", data);
-
+    
         botonTurno.disabled = false;
         botonTurno.innerText = "REGISTRAR TURNO";
-
-        alert("Solicitud de descanso enviada.");
+    
+        try {
+            const resultado = JSON.parse(data);
+    
+            if (resultado.ok) {
+                alert(resultado.mensaje);
+            } else {
+                alert(resultado.mensaje);
+            }
+    
+        } catch (error) {
+            alert("Respuesta inesperada del servidor.");
+        }
     })
     .catch(error => {
 
