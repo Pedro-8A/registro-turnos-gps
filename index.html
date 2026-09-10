@@ -600,11 +600,6 @@ if (movimiento === "inicio_descanso" || movimiento === "fin_descanso") {
     fetch("https://default8b319dc47d8e4d3088699d645934b6e3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=JQn0T8spHpQiFun4nMMba5-1yKIACmA7as-JbjYFdqI", {
 
         method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
         body: JSON.stringify({
             registroID: registroID,
             vigilador: vigilador,
