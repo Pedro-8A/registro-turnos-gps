@@ -148,6 +148,7 @@
         <option value="Ortiz Celeste">Ortiz Celeste</option>
         <option value="Pereyra Sergio">Pereyra Sergio</option>
         <option value="Tuninetti Eseteban">Tuninetti Esteban</option>
+        <option value="VIGILADOR TEST">VIGILADOR TEST</option>
 
     </select>
 
@@ -167,18 +168,23 @@
     </select>
 
 
+
     <!-- MOVIMIENTO -->
-
+    
     <label for="movimiento">Movimiento</label>
-
+    
     <select id="movimiento">
-
+    
         <option value="">Seleccione movimiento</option>
-
+    
         <option value="Ingreso">Ingreso</option>
         <option value="Egreso">Egreso</option>
-
+        <option value="inicio_descanso">Iniciar descanso</option>
+        <option value="fin_descanso">Finalizar descanso</option>
+    
     </select>
+
+
 
 
     <!-- UBICACIÓN INTERNA -->
@@ -230,6 +236,7 @@
 // ==========================================
 
 let ubicacionValidada = false;
+let registroID = null;
 
 
 // ==========================================
@@ -588,7 +595,33 @@ function registrarTurno() {
     botonTurno.innerText =
         "REGISTRANDO...";
 
+if (movimiento === "inicio_descanso" || movimiento === "fin_descanso") {
 
+    fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/15/workflows/4b597d79786449c6b2699d645934b6e3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=JQn0T8spHpQiFun4nMMba5-1yKIACmA7as-JbjYFdqI", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            registroID: registroID,
+
+            accion: movimiento,
+
+            ubicacion: ubicacion,
+
+            autorizacion: "Válido GPS"
+
+        })
+
+    });
+
+    return;
+}
+    
     fetch("https://default8b319dc47d8e4d3088693f64e6195e.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/19/workflows/88c07906fef04e478e2a93b0874e2839/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oOuBowuExfYF2heBheWEKS22aqHkBqukPw4z_QTq6fw", {
 
         method: "POST",
@@ -622,7 +655,7 @@ function registrarTurno() {
     const resultado = await response.json();
 
     if (resultado.ok) {
-
+    registroID = resultado.id;
     document.getElementById("vigilador").value = "";
     document.getElementById("turno").value = "";
     document.getElementById("movimiento").value = "";
